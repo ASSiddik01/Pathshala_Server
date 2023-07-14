@@ -27,7 +27,7 @@ exports.signInService = async (payload) => {
   // Existency Check
   const isExist = await User.isExist(userEmail);
   if (!isExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, "User does not exist");
+    throw new ApiError(httpStatus.NOT_FOUND, "Email is incorrect");
   }
 
   // Password Check
