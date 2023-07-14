@@ -1,14 +1,26 @@
 const { sendRes } = require("../../../src/utilities/sendRes");
 const { tryCatch } = require("../../../src/utilities/tryCatch");
 const {
-  loginUserService,
   refreshTokenService,
   changePasswordService,
+  signUpService,
+  signInService,
 } = require("./auth.services");
 const config = require("../../../src/config");
+const httpStatus = require("http-status");
 
-exports.loginUser = tryCatch(async (req, res) => {
-  const result = await loginUserService(req.body);
+exports.signUp = tryCatch(async (req, res) => {
+  const result = await signUpService(req.body);
+  sendRes(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Sign up successfully",
+    data: result,
+  });
+});
+
+exports.signIn = tryCatch(async (req, res) => {
+  const result = await signInService(req.body);
   const { refreshToken, ...others } = result;
 
   // Set Refresh Token in Cookies

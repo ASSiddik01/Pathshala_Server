@@ -5,25 +5,15 @@ const config = require("../../../src/config");
 
 const userSchema = new Schema(
   {
-    name: {
+    firstname: {
       type: String,
       required: true,
       trim: true,
     },
-    role: {
-      type: String,
-      enum: role,
-      required: true,
-    },
-    id: {
+    lastname: {
       type: String,
       required: true,
-      unique: true,
-    },
-    phoneNumber: {
-      type: String,
-      required: true,
-      unique: true,
+      trim: true,
     },
     email: {
       type: String,
@@ -34,13 +24,6 @@ const userSchema = new Schema(
       type: String,
       required: true,
       select: 0,
-    },
-    passwordChangedAt: {
-      type: Date,
-    },
-    address: {
-      type: String,
-      required: true,
     },
   },
   {
@@ -53,10 +36,7 @@ const userSchema = new Schema(
 
 // Existency Check
 userSchema.statics.isExist = async function (email) {
-  return await User.findOne(
-    { email },
-    { email: 1, password: 1, role: 1, id: 1, _id: 1 }
-  );
+  return await User.findOne({ email }, { email: 1, password: 1, _id: 1 });
 };
 
 // Password Match

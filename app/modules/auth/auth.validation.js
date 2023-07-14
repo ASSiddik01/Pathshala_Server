@@ -1,6 +1,23 @@
 const { z } = require("zod");
 
-exports.loginUserZod = z.object({
+exports.signUpZod = z.object({
+  body: z.object({
+    firstname: z.string({
+      required_error: "Zod: First name is required",
+    }),
+    lastname: z.string({
+      required_error: "Zod: Last name is required",
+    }),
+    email: z.string({
+      required_error: "Zod: Email is required",
+    }),
+    password: z.string({
+      required_error: "Zod: Password is required",
+    }),
+  }),
+});
+
+exports.signInZod = z.object({
   body: z.object({
     email: z.string({
       required_error: "Zod: Email is required",

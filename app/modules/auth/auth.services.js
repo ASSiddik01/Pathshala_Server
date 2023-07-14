@@ -5,7 +5,23 @@ const { createToken, verifyToken } = require("../../../src/helpers/jwtHelpers");
 const config = require("../../../src/config");
 const bcrypt = require("bcrypt");
 
-exports.loginUserService = async (payload) => {
+exports.signUpService = async (payload) => {
+  const isExist = await User.isExist(payload.email);
+
+  if (isExist) {
+    throw new Error("Email already exist");
+  }
+
+  const user = await User.create(payload);
+  if (!user) {
+    throw new Error("Sign up failed");
+  }
+
+  const result = await User.findById(user._id);
+  return result;
+};
+
+exports.signInService = async (payload) => {
   const { email: userEmail, password } = payload;
 
   // Existency Check
@@ -23,16 +39,16 @@ exports.loginUserService = async (payload) => {
   }
 
   // Create Access Token
-  const { _id, id, role, email } = isExist;
+  const { _id, email } = isExist;
   const accessToken = createToken(
-    { _id, id, role, email },
+    { _id, email },
     config.jwt.secret,
     config.jwt.expires_in
   );
 
   // Create Refresh Token
   const refreshToken = createToken(
-    { _id, id, role, email },
+    { _id, email },
     config.jwt.refresh_secret,
     config.jwt.refresh_expires_in
   );

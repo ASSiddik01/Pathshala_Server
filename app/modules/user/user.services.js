@@ -5,20 +5,8 @@ const {
 } = require("../../../src/helpers/paginationHelpers");
 const { userSearchableFields } = require("./user.constant");
 const User = require("./user.model");
-const { generateUserId } = require("./user.utils");
 const bcrypt = require("bcrypt");
 const config = require("../../../src/config");
-
-exports.createUserService = async (payload) => {
-  payload.role = "user";
-  payload.id = await generateUserId();
-  const user = await User.create(payload);
-  if (!user) {
-    throw new Error("User create failed");
-  }
-  const result = await User.findById(user._id);
-  return result;
-};
 
 exports.getAllUsersService = async (paginationOptions, filters) => {
   const { page, limit, skip, sortBy, sortOrder } =
