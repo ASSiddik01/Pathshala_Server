@@ -8,6 +8,7 @@ const {
   getBook,
   deleteBook,
   updateBook,
+  reviewBook,
 } = require("./book.controller");
 const router = express.Router();
 
@@ -21,5 +22,7 @@ router
   .get(getBook)
   .patch(auth(), updateBook)
   .delete(auth(), deleteBook);
+
+router.route("/review/:id").get(getBook).patch(auth(), reviewBook);
 
 module.exports = router;

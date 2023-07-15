@@ -31,6 +31,17 @@ const bookSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    reviews: [
+      {
+        review: {
+          type: String,
+        },
+        reviewerId: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+      },
+    ],
   },
   {
     timestamps: true,

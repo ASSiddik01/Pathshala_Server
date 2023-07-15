@@ -101,7 +101,7 @@ exports.deleteBookService = async (userId, id) => {
   return result;
 };
 
-exports.deleteBookService = async (userId, id, payload) => {
+exports.updateBookService = async (userId, id, payload) => {
   const book = await Book.findById(id);
   if (!book) {
     throw new Error("Book not found");
@@ -120,6 +120,33 @@ exports.deleteBookService = async (userId, id, payload) => {
   const result = await Book.findByIdAndUpdate(id, payload, {
     new: true,
   });
+
+  if (!result) {
+    throw new Error("Book update failed");
+  }
+  return result;
+};
+
+exports.reviewBookService = async (userId, id, payload) => {
+  const book = await Book.findById(id);
+  if (!book) {
+    throw new Error("Book not found");
+  }
+
+  const reviews = {
+    review: payload.review,
+    reviewerId: userId,
+  };
+
+  const result = await Book.findByIdAndUpdate(
+    id,
+    {
+      $push: { reviews: reviews },
+    },
+    {
+      new: true,
+    }
+  );
 
   if (!result) {
     throw new Error("Book update failed");

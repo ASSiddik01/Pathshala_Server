@@ -6,6 +6,8 @@ const {
   getBooksService,
   getBookService,
   deleteBookService,
+  updateBookService,
+  reviewBookService,
 } = require("./book.services");
 const { pick } = require("../../../src/utilities/pick");
 const { paginationFields } = require("../../../src/constants/pagination");
@@ -62,11 +64,24 @@ exports.updateBook = tryCatch(async (req, res) => {
   const { id } = req.params;
   const { _id } = req?.user;
   const updatedData = req.body;
-  const result = await deleteBookService(_id, id, updatedData);
+  const result = await updateBookService(_id, id, updatedData);
   sendRes(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Book update successfully",
+    data: result,
+  });
+});
+
+exports.reviewBook = tryCatch(async (req, res) => {
+  const { id } = req.params;
+  const { _id } = req?.user;
+  const userReview = req.body;
+  const result = await reviewBookService(_id, id, userReview);
+  sendRes(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Review submit successfully",
     data: result,
   });
 });
