@@ -74,3 +74,11 @@ exports.getBooksService = async (paginationOptions, filters) => {
     data: result,
   };
 };
+
+exports.getBookService = async (id) => {
+  const result = await Book.findById(id);
+  if (!result) {
+    throw new Error("Book not found");
+  }
+  return result;
+};

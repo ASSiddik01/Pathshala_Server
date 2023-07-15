@@ -1,7 +1,11 @@
 const httpStatus = require("http-status");
 const { sendRes } = require("../../../src/utilities/sendRes");
 const { tryCatch } = require("../../../src/utilities/tryCatch");
-const { createBookService, getBooksService } = require("./book.services");
+const {
+  createBookService,
+  getBooksService,
+  getBookService,
+} = require("./book.services");
 const { pick } = require("../../../src/utilities/pick");
 const { paginationFields } = require("../../../src/constants/pagination");
 const { bookFilterableFields } = require("./book.constant");
@@ -25,7 +29,18 @@ exports.getBooks = tryCatch(async (req, res) => {
   sendRes(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Book retrived successfully",
+    message: "Books retrived successfully",
+    data: result,
+  });
+});
+
+exports.getBook = tryCatch(async (req, res) => {
+  const { id } = req.params;
+  const result = await getBookService(id);
+  sendRes(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Book retrieved successfully",
     data: result,
   });
 });
