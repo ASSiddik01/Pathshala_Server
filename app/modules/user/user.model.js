@@ -25,6 +25,12 @@ const userSchema = new Schema(
       required: true,
       select: 0,
     },
+    wishlist: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Book",
+      },
+    ],
   },
   {
     timestamps: true,

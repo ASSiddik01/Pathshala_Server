@@ -121,3 +121,22 @@ exports.deleteUserService = async (id) => {
   }
   return result;
 };
+
+exports.addToWishListService = async (id, bookId) => {
+  const user = await User.findById(id);
+  const alreadyAdded = user.wishlist.find(
+    (id) => id.toString() === bookId.toString()
+  );
+  if (!alreadyAdded) {
+    const result = await User.findByIdAndUpdate(
+      id,
+      {
+        $push: { wishlist: bookId },
+      },
+      {
+        new: true,
+      }
+    ).populate("wishlist");
+    return result;
+  }
+};

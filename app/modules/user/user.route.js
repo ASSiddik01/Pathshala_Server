@@ -6,28 +6,19 @@ const {
   getSingleUser,
   updateUser,
   deleteUser,
+  addToWishList,
 } = require("./user.controller");
+const { auth } = require("../../../src/middleware/auth");
 const router = express.Router();
 
-router.route("/").get(
-  //   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.BUYER),
-  getAllUsers
-);
+router.route("/add-wishlist").patch(auth(), addToWishList);
+
+router.route("/").get(getAllUsers);
 
 router
   .route("/:id")
-  .get(
-    // auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.BUYER),
-    getSingleUser
-  )
-  .patch(
-    reqValidate(updateUserZod),
-    // auth(ENUM_USER_ROLE.SELLER),
-    updateUser
-  )
-  .delete(
-    //   auth(ENUM_USER_ROLE.SELLER),
-    deleteUser
-  );
+  .get(getSingleUser)
+  .patch(reqValidate(updateUserZod), updateUser)
+  .delete(deleteUser);
 
 module.exports = router;
