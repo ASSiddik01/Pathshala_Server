@@ -57,3 +57,16 @@ exports.deleteBook = tryCatch(async (req, res) => {
     data: result,
   });
 });
+
+exports.updateBook = tryCatch(async (req, res) => {
+  const { id } = req.params;
+  const { _id } = req?.user;
+  const updatedData = req.body;
+  const result = await deleteBookService(_id, id, updatedData);
+  sendRes(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Book update successfully",
+    data: result,
+  });
+});

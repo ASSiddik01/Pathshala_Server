@@ -7,6 +7,7 @@ const {
   getBooks,
   getBook,
   deleteBook,
+  updateBook,
 } = require("./book.controller");
 const router = express.Router();
 
@@ -15,6 +16,10 @@ router
   .post(auth(), reqValidate(createBookZod), createBook)
   .get(getBooks);
 
-router.route("/:id").get(getBook).delete(auth(), deleteBook);
+router
+  .route("/:id")
+  .get(getBook)
+  .patch(auth(), updateBook)
+  .delete(auth(), deleteBook);
 
 module.exports = router;

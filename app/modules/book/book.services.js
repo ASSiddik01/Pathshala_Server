@@ -100,3 +100,23 @@ exports.deleteBookService = async (userId, id) => {
   }
   return result;
 };
+
+exports.deleteBookService = async (userId, id, payload) => {
+  const book = await Book.findById(id);
+  if (!book) {
+    throw new Error("Book not found");
+  }
+
+  if (book.userId.valueOf() !== userId) {
+    throw new Error("This is not your added book, so you can't update");
+  }
+
+  const result = await Book.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
+
+  if (!result) {
+    throw new Error("Book update failed");
+  }
+  return result;
+};
