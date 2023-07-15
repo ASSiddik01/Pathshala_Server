@@ -1,7 +1,7 @@
 const {
   calculatePagination,
 } = require("../../../src/helpers/paginationHelpers");
-const { bookSearchableFields } = require("./book.constant");
+const { bookSearchableFields, bookPopulate } = require("./book.constant");
 const Book = require("./book.model");
 
 exports.createBookService = async (payload, id) => {
@@ -76,7 +76,7 @@ exports.getBooksService = async (paginationOptions, filters) => {
 };
 
 exports.getBookService = async (id) => {
-  const result = await Book.findById(id);
+  const result = await Book.findById(id).populate(bookPopulate);
   if (!result) {
     throw new Error("Book not found");
   }
