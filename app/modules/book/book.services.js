@@ -82,3 +82,21 @@ exports.getBookService = async (id) => {
   }
   return result;
 };
+
+exports.deleteBookService = async (userId, id) => {
+  const book = await Book.findById(id);
+
+  if (!book) {
+    throw new Error("Book not found");
+  }
+
+  if (book.userId.valueOf() !== userId) {
+    throw new Error("This is not your added book, so you can't delete");
+  }
+  const result = await Book.findByIdAndDelete(id);
+
+  if (!result) {
+    throw new Error("Book delete failed");
+  }
+  return result;
+};

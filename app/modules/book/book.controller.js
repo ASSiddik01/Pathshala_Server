@@ -5,6 +5,7 @@ const {
   createBookService,
   getBooksService,
   getBookService,
+  deleteBookService,
 } = require("./book.services");
 const { pick } = require("../../../src/utilities/pick");
 const { paginationFields } = require("../../../src/constants/pagination");
@@ -41,6 +42,18 @@ exports.getBook = tryCatch(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: "Book retrieved successfully",
+    data: result,
+  });
+});
+
+exports.deleteBook = tryCatch(async (req, res) => {
+  const { _id } = req?.user;
+  const { id } = req.params;
+  const result = await deleteBookService(_id, id);
+  sendRes(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Book deleted successfully",
     data: result,
   });
 });
