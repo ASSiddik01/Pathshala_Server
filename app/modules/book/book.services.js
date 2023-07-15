@@ -107,6 +107,12 @@ exports.deleteBookService = async (userId, id, payload) => {
     throw new Error("Book not found");
   }
 
+  // Title existency check in another book
+  const titleExist = await Book.findOne({ title: payload.title });
+  if (book.title !== titleExist?.title && titleExist) {
+    throw new Error(`Already here is a book by ${payload.title} name`);
+  }
+
   if (book.userId.valueOf() !== userId) {
     throw new Error("This is not your added book, so you can't update");
   }
