@@ -18,9 +18,9 @@ exports.auth =
       verifiedUser = verifyToken(token, config.jwt.secret);
       req.user = verifiedUser;
 
-      if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
-        throw new ApiError(httpStatus.FORBIDDEN, "Forbidden");
-      }
+      // if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
+      //   throw new ApiError(httpStatus.FORBIDDEN, "Forbidden");
+      // }
       next();
     } catch (error) {
       next(error);

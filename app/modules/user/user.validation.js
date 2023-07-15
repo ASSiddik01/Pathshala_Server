@@ -1,4 +1,3 @@
-const { role } = require("./user.constant");
 const { z } = require("zod");
 
 exports.updateUserZod = z.object({
