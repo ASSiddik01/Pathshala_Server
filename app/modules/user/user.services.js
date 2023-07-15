@@ -137,6 +137,17 @@ exports.addToWishListService = async (id, bookId) => {
         new: true,
       }
     ).populate("wishlist");
+
+    if (!result) {
+      throw new Error("Book add to wishlist failed");
+    }
     return result;
+  } else {
+    throw new Error("Already added");
   }
+};
+
+exports.getUserProfileService = async (id) => {
+  const result = await User.findById(id).populate("wishlist");
+  return result;
 };

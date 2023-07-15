@@ -7,9 +7,12 @@ const {
   updateUser,
   deleteUser,
   addToWishList,
+  getUserProfile,
 } = require("./user.controller");
 const { auth } = require("../../../src/middleware/auth");
 const router = express.Router();
+
+router.route("/profile").get(auth(), getUserProfile);
 
 router.route("/add-wishlist").patch(auth(), addToWishList);
 
