@@ -147,6 +147,31 @@ exports.addToWishListService = async (id, bookId) => {
   }
 };
 
+exports.removeFromWishListService = async (id, bookId) => {
+  const user = await User.findById(id);
+  const alreadyAdded = user.wishlist.find(
+    (id) => id.toString() === bookId.toString()
+  );
+  if (alreadyAdded) {
+    const result = await User.findByIdAndUpdate(
+      id,
+      {
+        $pull: { wishlist: bookId },
+      },
+      {
+        new: true,
+      }
+    ).populate("wishlist");
+
+    if (!result) {
+      throw new Error("Book remove from wishlist failed");
+    }
+    return result;
+  } else {
+    throw new Error("Already remove");
+  }
+};
+
 exports.getUserProfileService = async (id) => {
   const result = await User.findById(id).populate("wishlist");
   return result;
