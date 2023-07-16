@@ -9,6 +9,7 @@ const {
   addToWishListService,
   getUserProfileService,
   removeFromWishListService,
+  addToReadListService,
 } = require("./user.services");
 const { paginationFields } = require("../../../src/constants/pagination");
 const { pick } = require("../../../src/utilities/pick");
@@ -69,6 +70,17 @@ exports.addToWishList = tryCatch(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: "Book add to wishlist successfully",
+    data: result,
+  });
+});
+
+exports.addToReadList = tryCatch(async (req, res) => {
+  const { _id } = req.user;
+  const result = await addToReadListService(_id, req.body);
+  sendRes(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Book add to read list successfully",
     data: result,
   });
 });

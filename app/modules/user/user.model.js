@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const { role } = require("./user.constant");
+const { role, status } = require("./user.constant");
 const bcrypt = require("bcrypt");
 const config = require("../../../src/config");
 
@@ -29,6 +29,19 @@ const userSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "Book",
+      },
+    ],
+    readlist: [
+      {
+        bookId: {
+          type: Schema.Types.ObjectId,
+          ref: "Book",
+        },
+        status: {
+          type: String,
+          default: "Reading",
+          enum: status,
+        },
       },
     ],
   },

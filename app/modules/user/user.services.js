@@ -176,3 +176,30 @@ exports.getUserProfileService = async (id) => {
   const result = await User.findById(id).populate("wishlist");
   return result;
 };
+
+exports.addToReadListService = async (id, payload) => {
+  const user = await User.findById(id);
+
+  const alreadyAdded = user.readlist.find(
+    (book) => book.bookId.toString() === payload.bookId.toString()
+  );
+
+  if (!alreadyAdded) {
+    const result = await User.findByIdAndUpdate(
+      id,
+      {
+        $push: { readlist: payload },
+      },
+      {
+        new: true,
+      }
+    ).populate("readlist");
+
+    if (!result) {
+      throw new Error("Book add to readlist failed");
+    }
+    return result;
+  } else {
+    throw new Error("Already added");
+  }
+};
