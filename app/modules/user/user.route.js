@@ -10,6 +10,7 @@ const {
   getUserProfile,
   removeFromWishList,
   addToReadList,
+  markAsFinished,
 } = require("./user.controller");
 const { auth } = require("../../../src/middleware/auth");
 const router = express.Router();
@@ -17,6 +18,7 @@ const router = express.Router();
 router.route("/profile").get(auth(), getUserProfile);
 
 router.route("/add-readlist").patch(auth(), addToReadList);
+router.route("/mark-finished").patch(auth(), markAsFinished);
 
 router.route("/add-wishlist").patch(auth(), addToWishList);
 router.route("/remove-wishlist").patch(auth(), removeFromWishList);

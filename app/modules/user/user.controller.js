@@ -10,6 +10,7 @@ const {
   getUserProfileService,
   removeFromWishListService,
   addToReadListService,
+  markFinishedService,
 } = require("./user.services");
 const { paginationFields } = require("../../../src/constants/pagination");
 const { pick } = require("../../../src/utilities/pick");
@@ -74,17 +75,6 @@ exports.addToWishList = tryCatch(async (req, res) => {
   });
 });
 
-exports.addToReadList = tryCatch(async (req, res) => {
-  const { _id } = req.user;
-  const result = await addToReadListService(_id, req.body);
-  sendRes(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Book add to read list successfully",
-    data: result,
-  });
-});
-
 exports.removeFromWishList = tryCatch(async (req, res) => {
   const { _id } = req.user;
   const { bookId } = req.body;
@@ -104,6 +94,28 @@ exports.getUserProfile = tryCatch(async (req, res) => {
     statusCode: httpStatus.OK,
     success: true,
     message: "User get successfully",
+    data: result,
+  });
+});
+
+exports.addToReadList = tryCatch(async (req, res) => {
+  const { _id } = req.user;
+  const result = await addToReadListService(_id, req.body);
+  sendRes(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Book add to read list successfully",
+    data: result,
+  });
+});
+
+exports.markAsFinished = tryCatch(async (req, res) => {
+  const { _id } = req.user;
+  const result = await markFinishedService(_id, req.body);
+  sendRes(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Mark as finished successfully",
     data: result,
   });
 });

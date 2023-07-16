@@ -3,7 +3,7 @@ const { ApiError } = require("../../../src/errors/apiError");
 const {
   calculatePagination,
 } = require("../../../src/helpers/paginationHelpers");
-const { userSearchableFields } = require("./user.constant");
+const { userSearchableFields, userPopulate } = require("./user.constant");
 const User = require("./user.model");
 const bcrypt = require("bcrypt");
 const config = require("../../../src/config");
@@ -173,7 +173,7 @@ exports.removeFromWishListService = async (id, bookId) => {
 };
 
 exports.getUserProfileService = async (id) => {
-  const result = await User.findById(id).populate("wishlist");
+  const result = await User.findById(id).populate(userPopulate);
   return result;
 };
 
@@ -201,5 +201,34 @@ exports.addToReadListService = async (id, payload) => {
     return result;
   } else {
     throw new Error("Already added");
+  }
+};
+
+exports.markFinishedService = async (id, payload) => {
+  const user = await User.findById(id);
+
+  const alreadyAdded = user.readlist.find(
+    (book) => book.bookId.toString() === payload.bookId.toString()
+  );
+
+  if (alreadyAdded) {
+    const restBook = user.readlist.filter(
+      (book) => book.bookId.toString() !== payload.bookId.toString()
+    );
+
+    const result = await User.findByIdAndUpdate(
+      id,
+      { readlist: [payload, ...restBook] },
+      {
+        new: true,
+      }
+    ).populate("readlist");
+
+    if (!result) {
+      throw new Error("Mark as finished failed");
+    }
+    return result;
+  } else {
+    throw new Error("Not in read list");
   }
 };
